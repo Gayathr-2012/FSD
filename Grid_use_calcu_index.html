@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid Exercise</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"> 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <style>
+        #resultTable {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h5>Read the marks</h5>
+    <h2>Subject Marks</h2>
+    <div class="container">
+        <form id="marksForm">
+            <div class="mb-3 row">
+                <label for="subject1" class="col-4 col-form-label">Subject 1</label>
+                <div class="col-8">
+                    <input type="number" class="form-control" name="subject1" id="subject1" placeholder="Enter marks for Subject 1" required>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="subject2" class="col-4 col-form-label">Subject 2</label>
+                <div class="col-8">
+                    <input type="number" class="form-control" name="subject2" id="subject2" placeholder="Enter marks for Subject 2" required>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="subject3" class="col-4 col-form-label">Subject 3</label>
+                <div class="col-8">
+                    <input type="number" class="form-control" name="subject3" id="subject3" placeholder="Enter marks for Subject 3" required>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="subject4" class="col-4 col-form-label">Subject 4</label>
+                <div class="col-8">
+                    <input type="number" class="form-control" name="subject4" id="subject4" placeholder="Enter marks for Subject 4" required>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="offset-sm-4 col-sm-8">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="container">
+        <table id="resultTable" class="table">
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>Marks</th>
+                </tr>
+            </thead>
+            <tbody id="resultBody">
+                <!-- Results will be inserted here -->
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td><strong>GPA</strong></td>
+                    <td id="gpa"></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <script>
+        document.getElementById('marksForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            let marksForm = new FormData(this);
+            let marks = {
+                subject1: parseInt(marksForm.get('subject1')),
+                subject2: parseInt(marksForm.get('subject2')),
+                subject3: parseInt(marksForm.get('subject3')),
+                subject4: parseInt(marksForm.get('subject4'))
+            };
+            displayResults(marks);
+        });
+
+        function calculateGPA(marks) {
+            let totalMarks = marks.subject1 + marks.subject2 + marks.subject3 + marks.subject4;
+            let gpa = totalMarks / 4;
+            return gpa.toFixed(2);
+        }
+
+        function displayResults(marks) {
+            let resultBody = document.getElementById('resultBody');
+            resultBody.innerHTML = ''; // Clear previous results
+            Object.keys(marks).forEach(subject => {
+                let row = document.createElement('tr');
+                let subjectCell = document.createElement('td');
+                subjectCell.textContent = subject;
+                let markCell = document.createElement('td');
+                markCell.textContent = marks[subject];
+                row.appendChild(subjectCell);
+                row.appendChild(markCell);
+                resultBody.appendChild(row);
+            });
+            document.getElementById('gpa').textContent = calculateGPA(marks);
+            document.getElementById('resultTable').style.display = 'block';
+            document.querySelector('.container').style.display = 'none'; // Hide the form
+        }
+    </script>
+</body>
+</html>
